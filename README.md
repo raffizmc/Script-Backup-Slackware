@@ -1,10 +1,12 @@
-c# Script de Backup para Slackware
+## Script de Backup para Slackware
 
 Este é um script em Shell Script desenvolvido para realizar backups periódicos.
 
 Como usuário do Slackware, costumo formatar o sistema a cada 6 meses, seguido pela mesma pós-instalação, que inclui o download manual dos mesmos arquivos.
 
 Desenvolvi este script simples para efetuar um backup completo de um diretório específico, simplificando assim todo o processo. Tenho outros scripts de automação escritos em Shell, os quais pretendo compartilhar posteriormente. Embora não seja meu hábito comentar códigos, este script está bem documentado para facilitar o entendimento, sendo projetado para meu uso pessoal.
+
+##
 
 **Modo de Uso:**
 1. Baixe o arquivo e conceda permissão de execução (`chmod +x bkp-completo.sh`).
@@ -18,8 +20,11 @@ Se você precisa de ajuda para criar seus próprios cron jobs, pode dar uma olha
 
 Esteja atento ao arquivo de log para obter detalhes importantes sobre o processo de backup, incluindo possíveis erros ou mensagens informativas.
 
+##
+
 ## Feedback e Relatórios de Problemas
 
 Se você tiver alguma dúvida, sugestão ou encontrar algum problema ao usar este script, por favor, sinta-se à vontade para abrir uma "Issue" no repositório do GitHub. Terei o prazer em ajudar e resolver qualquer problema encontrado.
 
 RaffizMc está licenciado sob CC BY-NC 4.0 © 2024
+##
