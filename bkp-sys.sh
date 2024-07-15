@@ -45,7 +45,7 @@ while getopts ":cpl:h" opt; do
             ;;
         l )
             dispositivo_local=$OPTARG
-            external_storage="$dispositivo_local"
+            external_storage="/mnt/backup_hd"
             ;;
         h )
             exibir_ajuda
@@ -77,13 +77,22 @@ fi
 # Se o dispositivo local foi especificado, tente montá-lo
 if [ -n "$dispositivo_local" ]; then
     echo "Montando Dispositivo $dispositivo_local em $external_storage"
-    mount $dispositivo_local $external_storage
+    sudo mkdir -p $external_storage
+    if ! sudo mount $dispositivo_local $external_storage; then
+        echo "Erro ao montar o dispositivo $dispositivo_local em $external_storage" >> $log_file
+        exit 1
+    fi
 
     # Verificando se o Dispositivo está montado corretamente!
     if ! mountpoint -q -- $external_storage; then
         printf "[$date_format][ERRO] Dispositivo não montado em $external_storage.\n" >> $log_file
         exit 1
     fi
+fi
+
+# Certifique-se de que o diretório de armazenamento padrão existe
+if [ ! -d "$default_storage" ]; then
+    sudo mkdir -p $default_storage
 fi
 
 ########################################
@@ -95,13 +104,13 @@ case "$tipo_backup" in
     completo)
         echo "Realizando backup completo..."
         # Pastas Completas (Não pode ter nada em execução para não dar erros)
-        backup_paths="/tmp /home/USER /root /var/log"
+        backup_paths="/tmp /home/raffiz /root /var/log"
         ;;
     personalizado)
         echo "Realizando backup personalizado..."
-        # Backup da pasta inteira "USER" excluindo ".config" e ".cache", pode apresentar problemas no backup
-        backup_paths="/home/USER"
-        exclude_paths="--exclude=/home/USER/.config --exclude=/home/USER/.cache"
+        # Backup da pasta inteira "raffiz" excluindo ".config" e ".cache"
+        backup_paths="/home/raffiz/Documents /home/raffiz/Downloads /home/raffiz/Pictures /home/raffiz/Videos /var/log"
+        exclude_paths="--exclude=/home/raffiz/.config --exclude=/home/raffiz/.cache"
         ;;
     *)
         exibir_ajuda
@@ -138,4 +147,10 @@ else
     else
         printf "[$date_format] Backup não realizado!\n" >> $log_file
     fi
+fi
+
+# Desmontar o dispositivo se foi montado no script
+if [ -n "$dispositivo_local" ]; then
+    echo "Desmontando o dispositivo $dispositivo_local"
+    sudo umount $external_storage
 fi
