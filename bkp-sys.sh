@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #######################################
 # Script de Backup para Slackware
-# Autor: R@fF1z-ft.dll
-# link Github: https://github.com/rafF1z-ft
+# Autor: r4ff1z.dll
+# link Github: https://github.com/raffizmc
 # Data: 02 de Agosto de 2022
-versao="Versão: ss6-4.1"
+versao="Versão: ss4 2.5"
 #######################################
 
 #######################################
