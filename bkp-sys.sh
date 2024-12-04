@@ -2,7 +2,7 @@
 
 #######################################
 # Script de Backup para Slackware
-# Autor: r4ff1z.dll
+# Autor: R4fF1z.pwn
 # link Github: https://github.com/raffizmc
 # Data: 02 de Agosto de 2022
 versao="Versão: ss4 2.5"
