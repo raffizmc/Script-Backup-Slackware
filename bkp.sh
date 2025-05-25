@@ -5,7 +5,7 @@
 # Autor: R4fF1z.pwn
 # Github: https://github.com/raffizmc/Script-Backup-Slackware
 # Data: 25/05/2025
-versao="Versão: 4.3"
+versao="Versão: 2.5_ss4"
 ##########################################################################
 
 # VARIÁVEIS
