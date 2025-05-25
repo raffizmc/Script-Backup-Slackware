@@ -1,30 +1,98 @@
-## Script de Backup para Slackware
+# 🗄️ Script de Backup para Slackware/Linux (via SSH)
 
-Este é um script em Shell Script desenvolvido para realizar backups periódicos.
+Este é um script de **backup automatizado** escrito em Bash, criado para facilitar meus backups periódicos. Ele foi projetado inicialmente para Slackware, mas funciona perfeitamente em outras distros (como Arch, que uso atualmente), com foco em **automatização via terminal**.
 
-Como usuário do Slackware, costumo formatar o sistema a cada 6 meses, seguido pela mesma pós-instalação, que inclui o download manual dos mesmos arquivos.
+Tenho o hábito de formatar o sistema regularmente, e manter um backup dos meus arquivos pessoais, configurações e lista de pacotes instalados economiza bastante tempo. O script faz o backup localmente e o envia via **SSH para outro servidor**, mantendo apenas os 5 backups mais recentes no destino.
 
-Desenvolvi este script simples para efetuar um backup completo de um diretório específico, simplificando assim todo o processo. Tenho outros scripts de automação escritos em Shell, os quais pretendo compartilhar posteriormente. Embora não seja meu hábito comentar códigos, este script está bem documentado para facilitar o entendimento, sendo projetado para meu uso pessoal.
+> 🔒 Todo o processo é registrado em um arquivo de log para facilitar a auditoria ou debugging.
 
+---
+
+## ⚙️ Funcionalidades
+
+- Compacta arquivos/diretórios escolhidos (.bashrc, Documentos, .ssh, etc.)
+- Gera lista de pacotes instalados (`yay -Qq`)
+- Envia o backup via `scp` para um servidor remoto
+- Remove backups antigos no servidor, mantendo os 5 mais recentes
+- Registra logs no sistema
+- Pode ser usado com `cron` para backups automáticos
+
+---
+
+## 🚀 Como usar
+
+1. **Clone o repositório:**
+   ```
+   git clone https://github.com/raffizmc/Script-Backup-Slackware.git
+   cd Script-Backup-Slackware
+   ```
+
+2. Edite o script com seus caminhos e configurações de servidor:
+```
+servidor_destino="usuario@ip"
+```
+
+```
+porta_ssh="22" (ou a porta que você usa)
+```
+
+```
+destino_server="/caminho/no/servidor"
+```
+
+Dê permissão de execução:
+```
+chmod +x bkp.sh
+```
+
+4. (Opcional) Mova o script para um diretório no PATH:
+```
+sudo mv bkp.sh /usr/local/bin/bkp.sh
+```
+
+5. (Opcional) Adicione este alias no seu .bashrc para facilitar:
+```
+echo "alias log-bkp='tail -n 20 /var/log/backup/backup_diario.log'" >> ~/.bashrc
+source ~/.bashrc
+```
+
+6. Execute manualmente:
+```
+bkp.sh
+```
+
+7. Verifique o log:
+```
+log-bkp
+```
+##
+## 🛠️ Requisitos
+```
+yay (ou adapte o comando para seu gerenciador de pacotes, ex: pacman -Qq)
+
+tar, scp, ssh, xargs
+
+Permissão de escrita em /var/log/backup/
+```
 ##
 
-**Modo de Uso:**
-1. Baixe o arquivo e conceda permissão de execução (`chmod +x bkp-completo.sh`).
-2. Mova o arquivo para: `mv /usr/local/sbin/bkp-completo.sh`.
-3. (Opcional) Crie uma abreviação no arquivo `.bashrc` com o seguinte comando: `alias log-bkp="cat /var/log/daily-backup.log"` para visualizar o log do backup com apenas o comando `log-bkp`.
-4. Execute o script via terminal com `bkp-completo.sh`.
-5. Verifique o log (`/var/log/daily-backup.log`) para saber se a operação foi bem-sucedida, pois o resultado não é exibido na tela. Dependendo do tamanho, a execução pode demorar alguns minutos.
-6. (Opcional) Crie um cron job para agendar automaticamente os backups. Por exemplo, o seguinte cron job vai fazer backups na segunda, quarta e sábado às 21:30: "30 21 * * 1,3,6 /usr/local/sbin/bkp-completo -c"
-Certifique-se de passar o argumento "-c" para o script "bkp-completo". Este argumento é crucial para o funcionamento adequado do backup no Cron job!
-Se você precisa de ajuda para criar seus próprios cron jobs, pode dar uma olhada neste link para mais informações: CronTab Guru.
+### [DICA] 📅 Automatizando com cron
+Você pode agendar backups automáticos com cron. Exemplo para rodar toda segunda, quarta e sábado às 21h30:
+Exemplo:
+```
+30 21 * * 1,3,6 /usr/local/bin/bkp.sh
+```
+Site mapa Crontab Guru:
+```
+https://crontab.guru/
+```
+#### Lembre-se de testar o script manualmente antes de automatizar.
 
-Esteja atento ao arquivo de log para obter detalhes importantes sobre o processo de backup, incluindo possíveis erros ou mensagens informativas.
+Certifique-se de que o ssh-agent esteja configurado corretamente se estiver usando chave com senha.
 
 ##
+## 💬 Feedback
+Se quiser contribuir, relatar bugs ou dar sugestões, abra uma Issue aqui no GitHub.
 
-## Feedback e Relatórios de Problemas
-
-Se você tiver alguma dúvida, sugestão ou encontrar algum problema ao usar este script, por favor, sinta-se à vontade para abrir uma "Issue" no repositório do GitHub. Terei o prazer em ajudar e resolver qualquer problema encontrado.
-
-RaffizMc está licenciado sob CC BY-NC 4.0 © 2024
-##
+RaffizMc - @2025
+Licenciado sob CC BY-NC 4.0
